@@ -11,11 +11,20 @@ import {
   Chip, 
   CircularProgress,
   IconButton,
-  Stack
+  Stack,
+  Card,
+  CardContent,
+  Avatar
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import DescriptionIcon from '@mui/icons-material/Description';
+import EditIcon from '@mui/icons-material/Edit';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
@@ -66,162 +75,281 @@ export default function ChatInterface() {
     }
   };
 
+  const handleCardClick = (text: string) => {
+    setInput(text);
+  };
+
+  const suggestions = [
+    {
+      icon: <AutoAwesomeIcon color="primary" />,
+      text: "Help me understand the new tax regulations for small businesses",
+      color: "#e3f2fd"
+    },
+    {
+      icon: <DescriptionIcon color="error" />,
+      text: "Summarize the NSSF Act compliance requirements",
+      color: "#ffebee"
+    },
+    {
+      icon: <EditIcon color="warning" />,
+      text: "Draft a legal compliance checklist for a startup",
+      color: "#fff3e0"
+    }
+  ];
+
   return (
-    <Paper 
-      elevation={3} 
-      sx={{ 
-        height: 600, 
-        width: '100%', 
-        maxWidth: 900, 
-        mx: 'auto', 
-        display: 'flex', 
-        flexDirection: 'column',
-        overflow: 'hidden',
-        borderRadius: 4,
-        bgcolor: 'background.paper'
-      }}
-    >
-      <Box sx={{ flex: 1, overflowY: 'auto', p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {messages.length === 0 && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', opacity: 0.6 }}>
-            <SmartToyIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
-            <Typography variant="h6" color="text.secondary">
-              Ask me about Uganda Business Laws
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Try "What is the corporate tax rate?"
-            </Typography>
-          </Box>
-        )}
-        
-        <AnimatePresence>
-          {messages.map((msg, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '80%',
-              }}
-            >
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  borderRadius: 3,
-                  borderTopRightRadius: msg.role === 'user' ? 0 : 3,
-                  borderTopLeftRadius: msg.role === 'assistant' ? 0 : 3,
-                  bgcolor: msg.role === 'user' ? 'primary.main' : 'grey.100',
-                  color: msg.role === 'user' ? 'white' : 'text.primary',
-                }}
-              >
-                <Stack direction="row" spacing={1} alignItems="flex-start">
-                  {msg.role === 'assistant' && <SmartToyIcon fontSize="small" sx={{ mt: 0.5, opacity: 0.7 }} />}
-                  <Box>
-                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-                      {msg.content}
-                    </Typography>
-                    
-                    {msg.citations && msg.citations.length > 0 && (
-                      <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid', borderColor: 'rgba(0,0,0,0.1)' }}>
-                        <Typography variant="caption" sx={{ display: 'block', mb: 1, opacity: 0.8, fontWeight: 600 }}>
-                          Sources:
-                        </Typography>
-                        <Stack direction="row" flexWrap="wrap" gap={1}>
-                          {msg.citations.map((cit, i) => (
-                            <Chip 
-                              key={i} 
-                              label={`${cit.source} (p.${cit.page})`} 
-                              size="small" 
-                              variant="outlined"
-                              sx={{ 
-                                color: 'inherit', 
-                                borderColor: 'rgba(0,0,0,0.1)',
-                                bgcolor: 'rgba(255,255,255,0.1)'
-                              }} 
-                            />
-                          ))}
-                        </Stack>
-                      </Box>
-                    )}
-                  </Box>
-                </Stack>
-              </Paper>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {isLoading && (
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <Paper sx={{ p: 2, borderRadius: 3, borderTopLeftRadius: 0, bgcolor: 'grey.100' }}>
-              <Stack direction="row" spacing={1}>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                >
-                  <Box sx={{ width: 8, height: 8, bgcolor: 'grey.500', borderRadius: '50%' }} />
-                </motion.div>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
-                >
-                  <Box sx={{ width: 8, height: 8, bgcolor: 'grey.500', borderRadius: '50%' }} />
-                </motion.div>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
-                >
-                  <Box sx={{ width: 8, height: 8, bgcolor: 'grey.500', borderRadius: '50%' }} />
-                </motion.div>
-              </Stack>
-            </Paper>
-          </Box>
-        )}
-        <div ref={messagesEndRef} />
-      </Box>
-
-      <Box 
-        component="form" 
-        onSubmit={handleSubmit} 
-        sx={{ 
-          p: 2, 
-          bgcolor: 'background.paper', 
-          borderTop: 1, 
-          borderColor: 'divider',
-          display: 'flex',
-          gap: 2
-        }}
-      >
-        <TextField
-          fullWidth
-          placeholder="Type your legal question here..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={isLoading}
-          variant="outlined"
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#f8f9fa' }}>
+      {/* Header */}
+      <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 2 }}>
+        <Button 
+          endIcon={<KeyboardArrowDownIcon />} 
           sx={{ 
-            '& .MuiOutlinedInput-root': { 
-              borderRadius: 3,
-              bgcolor: 'grey.50'
-            } 
+            color: 'text.primary', 
+            bgcolor: 'white', 
+            border: '1px solid', 
+            borderColor: 'grey.200',
+            textTransform: 'none',
+            borderRadius: 2,
+            px: 2
           }}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          disabled={isLoading || !input.trim()}
-          sx={{ 
-            borderRadius: 3, 
-            px: 4,
-            boxShadow: 2
-          }}
-          endIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
         >
-          Send
+          Uganda Laws 1.0
+        </Button>
+        <Button 
+          variant="contained" 
+          startIcon={<AddIcon />}
+          onClick={() => setMessages([])}
+          sx={{ 
+            borderRadius: 2, 
+            textTransform: 'none',
+            boxShadow: 'none',
+            bgcolor: '#0091ff',
+            '&:hover': { bgcolor: '#0081e6' }
+          }}
+        >
+          New Chat
         </Button>
       </Box>
-    </Paper>
+
+      {/* Main Content */}
+      <Box sx={{ flex: 1, overflowY: 'auto', px: 4, pb: 15, display: 'flex', flexDirection: 'column' }}>
+        {messages.length === 0 ? (
+          <Box sx={{ 
+            flex: 1, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            mt: -10 
+          }}>
+            <Box sx={{ 
+              width: 60, 
+              height: 60, 
+              bgcolor: 'black', 
+              borderRadius: '50%', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              mb: 3,
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+            }}>
+              <SmartToyIcon sx={{ color: 'white', fontSize: 30 }} />
+            </Box>
+            <Typography variant="h4" fontWeight="600" gutterBottom>
+              Hi, there 👋
+            </Typography>
+            <Typography variant="h3" fontWeight="600" gutterBottom sx={{ mb: 6 }}>
+              How can we help?
+            </Typography>
+
+            <Stack direction="row" spacing={3} sx={{ width: '100%', maxWidth: 900 }}>
+              {suggestions.map((item, index) => (
+                <Card 
+                  key={index}
+                  component={motion.div}
+                  whileHover={{ y: -5 }}
+                  onClick={() => handleCardClick(item.text)}
+                  sx={{ 
+                    flex: 1, 
+                    cursor: 'pointer', 
+                    borderRadius: 4,
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+                    border: '1px solid',
+                    borderColor: 'transparent',
+                    '&:hover': { borderColor: 'primary.main' }
+                  }}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    <Box sx={{ 
+                      width: 40, 
+                      height: 40, 
+                      borderRadius: 2, 
+                      bgcolor: item.color, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      mb: 2
+                    }}>
+                      {item.icon}
+                    </Box>
+                    <Typography variant="body1" fontWeight="500" color="text.secondary">
+                      {item.text}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </Stack>
+          </Box>
+        ) : (
+          <Box sx={{ maxWidth: 800, mx: 'auto', width: '100%', pt: 4 }}>
+            <AnimatePresence>
+              {messages.map((msg, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Box sx={{ mb: 4, display: 'flex', gap: 2, flexDirection: msg.role === 'user' ? 'row-reverse' : 'row' }}>
+                    <Avatar 
+                      sx={{ 
+                        bgcolor: msg.role === 'user' ? 'primary.main' : 'black',
+                        width: 32,
+                        height: 32
+                      }}
+                    >
+                      {msg.role === 'user' ? <PersonIcon fontSize="small" /> : <SmartToyIcon fontSize="small" />}
+                    </Avatar>
+                    <Box sx={{ maxWidth: '80%' }}>
+                      <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 600, textAlign: msg.role === 'user' ? 'right' : 'left' }}>
+                        {msg.role === 'user' ? 'You' : 'Assistant'}
+                      </Typography>
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          p: 2,
+                          borderRadius: 3,
+                          bgcolor: msg.role === 'user' ? 'primary.main' : 'white',
+                          color: msg.role === 'user' ? 'white' : 'text.primary',
+                          boxShadow: msg.role === 'user' ? 2 : '0 2px 12px rgba(0,0,0,0.05)'
+                        }}
+                      >
+                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
+                          {msg.content}
+                        </Typography>
+                        
+                        {msg.citations && msg.citations.length > 0 && (
+                          <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid', borderColor: msg.role === 'user' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)' }}>
+                            <Typography variant="caption" sx={{ display: 'block', mb: 1, opacity: 0.8, fontWeight: 600 }}>
+                              Sources:
+                            </Typography>
+                            <Stack direction="row" flexWrap="wrap" gap={1}>
+                              {msg.citations.map((cit, i) => (
+                                <Chip 
+                                  key={i} 
+                                  label={`${cit.source} (p.${cit.page})`} 
+                                  size="small" 
+                                  variant="outlined"
+                                  sx={{ 
+                                    color: 'inherit', 
+                                    borderColor: msg.role === 'user' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.1)',
+                                    bgcolor: msg.role === 'user' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+                                  }} 
+                                />
+                              ))}
+                            </Stack>
+                          </Box>
+                        )}
+                      </Paper>
+                    </Box>
+                  </Box>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {isLoading && (
+              <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+                <Avatar sx={{ bgcolor: 'black', width: 32, height: 32 }}>
+                  <SmartToyIcon fontSize="small" />
+                </Avatar>
+                <Paper sx={{ p: 2, borderRadius: 3, bgcolor: 'white', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+                  <Stack direction="row" spacing={1}>
+                    <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1 }}>
+                      <Box sx={{ width: 6, height: 6, bgcolor: 'grey.500', borderRadius: '50%' }} />
+                    </motion.div>
+                    <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}>
+                      <Box sx={{ width: 6, height: 6, bgcolor: 'grey.500', borderRadius: '50%' }} />
+                    </motion.div>
+                    <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}>
+                      <Box sx={{ width: 6, height: 6, bgcolor: 'grey.500', borderRadius: '50%' }} />
+                    </motion.div>
+                  </Stack>
+                </Paper>
+              </Box>
+            )}
+            <div ref={messagesEndRef} />
+          </Box>
+        )}
+      </Box>
+
+      {/* Input Area */}
+      <Box sx={{ 
+        position: 'fixed', 
+        bottom: 0, 
+        left: 80, // Sidebar width
+        right: 0,
+        p: 3,
+        bgcolor: 'rgba(248, 249, 250, 0.9)',
+        backdropFilter: 'blur(10px)'
+      }}>
+        <Box sx={{ maxWidth: 900, mx: 'auto' }}>
+          <Paper 
+            component="form" 
+            onSubmit={handleSubmit}
+            elevation={0}
+            sx={{ 
+              p: '8px 16px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              borderRadius: 4,
+              border: '1px solid',
+              borderColor: 'grey.200',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+              bgcolor: 'white'
+            }}
+          >
+            <IconButton sx={{ p: '10px', color: 'text.secondary' }}>
+              <AttachFileIcon />
+            </IconButton>
+            <TextField
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Ask me anything..."
+              variant="standard"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              InputProps={{ disableUnderline: true }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!input.trim() || isLoading}
+              sx={{ 
+                borderRadius: 3,
+                minWidth: 'auto',
+                px: 3,
+                py: 1,
+                bgcolor: '#0091ff',
+                '&:hover': { bgcolor: '#0081e6' }
+              }}
+              endIcon={<SendIcon />}
+            >
+              Send
+            </Button>
+          </Paper>
+          <Typography variant="caption" display="block" align="center" color="text.secondary" sx={{ mt: 2 }}>
+            Uganda Laws Assistant may display inaccurate info, so please double check the response. <Box component="span" sx={{ textDecoration: 'underline', cursor: 'pointer' }}>Your Privacy & Uganda Laws AI</Box>
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }

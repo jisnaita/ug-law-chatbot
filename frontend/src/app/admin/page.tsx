@@ -55,7 +55,7 @@ export default function AdminPage() {
 
         <Grid container spacing={4}>
           {/* Upload Section */}
-          <Grid item xs={12} lg={4}>
+          <Grid size={{ xs: 12, lg: 4 }}>
             <Box 
               component={motion.div}
               initial={{ opacity: 0, x: -20 }}
@@ -73,7 +73,7 @@ export default function AdminPage() {
           </Grid>
 
           {/* Document List Section */}
-          <Grid item xs={12} lg={8}>
+          <Grid size={{ xs: 12, lg: 8 }}>
             <Box
               component={motion.div}
               initial={{ opacity: 0, x: 20 }}
