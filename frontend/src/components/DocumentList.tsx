@@ -19,10 +19,10 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { motion } from 'framer-motion';
 
 interface Document {
-  id: number;
+  id: string;
   filename: string;
   title: string;
-  upload_date: string;
+  uploaded_at: string;
 }
 
 interface DocumentListProps {
@@ -112,11 +112,11 @@ export default function DocumentList({ refreshTrigger }: DocumentListProps) {
                   {doc.filename}
                 </Typography>
               </TableCell>
-              <TableCell>
-                <Typography variant="body2" color="text.secondary">
-                  {new Date(doc.upload_date).toLocaleDateString()}
-                </Typography>
-              </TableCell>
+                <TableCell>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(doc.uploaded_at).toLocaleDateString()}
+                  </Typography>
+                </TableCell>
               <TableCell>
                 <Chip 
                   label="Active" 
