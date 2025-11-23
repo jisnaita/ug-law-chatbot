@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeRegistry from '@/theme/ThemeRegistry';
+import { ChatProvider } from '@/context/ChatContext';
 
 export const metadata: Metadata = {
   title: 'Uganda Laws Assistant',
@@ -16,7 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <ThemeRegistry>
+          <ChatProvider>
+            {children}
+          </ChatProvider>
+        </ThemeRegistry>
       </body>
     </html>
   );

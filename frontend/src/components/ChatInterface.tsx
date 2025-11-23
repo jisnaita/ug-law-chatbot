@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { chatWithBot } from '@/lib/api';
 import { 
   Box, 
   TextField, 
@@ -9,7 +8,6 @@ import {
   Paper, 
   Typography, 
   Chip, 
-  CircularProgress,
   IconButton,
   Stack,
   Card,
@@ -27,16 +25,21 @@ import EditIcon from '@mui/icons-material/Edit';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface Message {
+export interface Message {
   role: 'user' | 'assistant';
   content: string;
   citations?: { source: string; page: number }[];
 }
 
-export default function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([]);
+interface ChatInterfaceProps {
+  messages: Message[];
+  onSendMessage: (message: string) => void;
+  isLoading: boolean;
+  onNewChat: () => void;
+}
+
+export default function ChatInterface({ messages, onSendMessage, isLoading, onNewChat }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -45,38 +48,17 @@ export default function ChatInterface() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isLoading]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    if (!input.trim() || isLoading) return;
+    onSendMessage(input);
     setInput('');
-    setIsLoading(true);
-
-    try {
-      const response = await chatWithBot(input);
-      const botMessage: Message = {
-        role: 'assistant',
-        content: response.answer,
-        citations: response.citations,
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Chat error:', error);
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleCardClick = (text: string) => {
-    setInput(text);
+    onSendMessage(text);
   };
 
   const suggestions = [
@@ -118,7 +100,7 @@ export default function ChatInterface() {
         <Button 
           variant="contained" 
           startIcon={<AddIcon />}
-          onClick={() => setMessages([])}
+          onClick={onNewChat}
           sx={{ 
             borderRadius: 2, 
             textTransform: 'none',
@@ -295,11 +277,12 @@ export default function ChatInterface() {
       <Box sx={{ 
         position: 'fixed', 
         bottom: 0, 
-        left: 80, // Sidebar width
+        left: { xs: 0, md: 80 }, // Adjust for sidebar
         right: 0,
         p: 3,
         bgcolor: 'rgba(248, 249, 250, 0.9)',
-        backdropFilter: 'blur(10px)'
+        backdropFilter: 'blur(10px)',
+        zIndex: 1000
       }}>
         <Box sx={{ maxWidth: 900, mx: 'auto' }}>
           <Paper 

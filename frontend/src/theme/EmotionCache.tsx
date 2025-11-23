@@ -3,7 +3,7 @@
 import * as React from 'react';
 import createCache from '@emotion/cache';
 import { useServerInsertedHTML } from 'next/navigation';
-import { CacheProvider } from '@emotion/react';
+import { CacheProvider as EmotionCacheProvider } from '@emotion/react';
 import type { EmotionCache, Options as OptionsOfCreateCache } from '@emotion/cache';
 
 // Adapted from https://github.com/garronej/tss-react/blob/main/src/next/appDir.tsx
@@ -20,7 +20,7 @@ export interface NextAppDirEmotionCacheProviderProps {
 
 // This implementation is taken from the MUI docs for Next.js App Router integration
 export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionCacheProviderProps) {
-  const { options, CacheProvider = React.Fragment, children } = props;
+  const { options, CacheProvider = EmotionCacheProvider, children } = props;
 
   const [{ cache, flush }] = React.useState(() => {
     const cache = createCache(options);
