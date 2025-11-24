@@ -15,10 +15,14 @@ class ChatRequest(BaseModel):
     chat_id: Optional[str] = None
     user_id: str # For now, passed directly. In real app, get from auth token.
 
+class Citation(BaseModel):
+    source: str
+    page: int
+
 class ChatResponse(BaseModel):
     response: str
     chat_id: str
-    citations: List[str]
+    citations: List[Citation]
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest, db: Session = Depends(get_db)):
@@ -53,8 +57,17 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db)):
     db.add(assistant_msg)
     db.commit()
     
-    # Extract citations (simple approach)
-    citations = list(set([chunk.get('source', 'Unknown') for chunk in context_chunks]))
+    # Extract citations
+    # Use a dictionary to keep unique sources, defaulting page to 1 if not available
+    unique_citations = {}
+    for chunk in context_chunks:
+        source = chunk.get('source', 'Unknown')
+        # Try to get page from metadata, default to 1
+        page = chunk.get('page', 1)
+        if source not in unique_citations:
+            unique_citations[source] = page
+            
+    citations = [Citation(source=s, page=p) for s, p in unique_citations.items()]
 
     return ChatResponse(
         response=answer,

@@ -8,6 +8,7 @@ venv/
 env/
 backend/documents.db
 backend/qdrant_data/
+backend/qdrant_storage/
 backend/uploads/
 
 # Node

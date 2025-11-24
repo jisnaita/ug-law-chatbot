@@ -1,0 +1,127 @@
+2025-11-24 17:56:51,376 - src.routes.documents - INFO - Starting processing for test.txt
+2025-11-24 17:56:51,377 - src.routes.documents - INFO - Chunking test.txt...
+2025-11-24 17:56:51,380 - src.routes.documents - ERROR - Error processing test.txt: File format not allowed: d8b5fb99-31a6-4136-b659-680076f431d5_test.txt
+2025-11-24 17:56:51,383 - src.routes.documents - ERROR - Traceback (most recent call last):
+  File "C:\Users\JonathanNaita\Downloads\To be delete\Chunking\backend\src\routes\documents.py", line 44, in process_document_background
+    chunks = doc_processor.process_file(file_path, metadata)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\Downloads\To be delete\Chunking\backend\src\services\chunking\document_processor.py", line 25, in process_file
+    doc = self.converter.convert(file_path).document
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\pydantic\_internal\_validate_call.py", line 39, in wrapper_function
+    return wrapper(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\pydantic\_internal\_validate_call.py", line 136, in __call__
+    res = self.__pydantic_validator__.validate_python(pydantic_core.ArgsKwargs(args, kwargs))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 264, in convert
+    return next(all_res)
+           ^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 287, in convert_all
+    for conv_res in conv_res_iter:
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 363, in _convert
+    for item in map(
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 414, in _process_document
+    raise ConversionError(error_message)
+docling.exceptions.ConversionError: File format not allowed: d8b5fb99-31a6-4136-b659-680076f431d5_test.txt
+
+2025-11-24 17:56:51,384 - src.routes.documents - INFO - Removed temporary file uploads\d8b5fb99-31a6-4136-b659-680076f431d5_test.txt
+2025-11-24 18:01:07,497 - src.routes.documents - INFO - Starting processing for test.pdf
+2025-11-24 18:01:07,498 - src.routes.documents - INFO - Chunking test.pdf...
+2025-11-24 18:01:11,097 - src.routes.documents - ERROR - Error processing test.pdf: C:\pyproj\docling_project\models\RapidOcr\torch\PP-OCRv4\det\ch_PP-OCRv4_det_infer.pth does not exists.
+2025-11-24 18:01:11,183 - src.routes.documents - ERROR - Traceback (most recent call last):
+  File "C:\Users\JonathanNaita\Downloads\To be delete\Chunking\backend\src\routes\documents.py", line 44, in process_document_background
+    chunks = doc_processor.process_file(file_path, metadata)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\Downloads\To be delete\Chunking\backend\src\services\chunking\document_processor.py", line 25, in process_file
+    doc = self.converter.convert(file_path).document
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\pydantic\_internal\_validate_call.py", line 39, in wrapper_function
+    return wrapper(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\pydantic\_internal\_validate_call.py", line 136, in __call__
+    res = self.__pydantic_validator__.validate_python(pydantic_core.ArgsKwargs(args, kwargs))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 264, in convert
+    return next(all_res)
+           ^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 287, in convert_all
+    for conv_res in conv_res_iter:
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 363, in _convert
+    for item in map(
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 410, in _process_document
+    conv_res = self._execute_pipeline(in_doc, raises_on_error=raises_on_error)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 431, in _execute_pipeline
+    pipeline = self._get_pipeline(in_doc.format)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\document_converter.py", line 393, in _get_pipeline
+    self.initialized_pipelines[cache_key] = pipeline_class(
+                                            ^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\pipeline\standard_pdf_pipeline.py", line 420, in __init__
+    self._init_models()
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\pipeline\standard_pdf_pipeline.py", line 438, in _init_models
+    self.ocr_model = self._make_ocr_model(art_path)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\pipeline\standard_pdf_pipeline.py", line 483, in _make_ocr_model
+    return factory.create_instance(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\models\factories\base_factory.py", line 57, in create_instance
+    return _cls(options=options, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\models\auto_ocr_model.py", line 103, in __init__
+    self._engine = RapidOcrModel(
+                   ^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\docling\models\rapid_ocr_model.py", line 205, in __init__
+    self.reader = RapidOCR(
+                  ^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\rapidocr\main.py", line 43, in __init__
+    self._initialize(cfg)
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\rapidocr\main.py", line 64, in _initialize
+    self.text_det = TextDetector(cfg.Det)
+                    ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\rapidocr\ch_ppocr_det\main.py", line 45, in __init__
+    self.session = get_engine(cfg.engine_type)(cfg)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\rapidocr\inference_engine\torch.py", line 22, in __init__
+    model_path = self._init_model_path(cfg)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\rapidocr\inference_engine\torch.py", line 55, in _init_model_path
+    self._verify_model(model_path)
+  File "C:\Users\JonathanNaita\AppData\Local\Programs\Python\Python311\Lib\site-packages\rapidocr\inference_engine\base.py", line 87, in _verify_model
+    raise FileNotFoundError(f"{model_path} does not exists.")
+FileNotFoundError: C:\pyproj\docling_project\models\RapidOcr\torch\PP-OCRv4\det\ch_PP-OCRv4_det_infer.pth does not exists.
+
+2025-11-24 18:01:11,186 - src.routes.documents - INFO - Removed temporary file uploads\d61cd8b8-577d-4fec-9ae8-c8c75211e922_test.pdf
+2025-11-24 18:08:37,632 - src.routes.documents - INFO - Starting processing for test.pdf
+2025-11-24 18:08:37,640 - src.routes.documents - INFO - Chunking test.pdf...
+2025-11-24 18:08:37,640 - src.routes.documents - INFO - Generated 1 chunks for test.pdf
+2025-11-24 18:08:37,640 - src.routes.documents - INFO - Embedding 1 chunks...
+2025-11-24 18:08:39,849 - src.routes.documents - INFO - Generated embeddings for test.pdf
+2025-11-24 18:08:39,850 - src.routes.documents - INFO - Storing chunks in Vector DB...
+2025-11-24 18:08:39,854 - src.routes.documents - INFO - Successfully processed test.pdf
+2025-11-24 18:08:39,855 - src.routes.documents - INFO - Removed temporary file uploads\a4ef7f51-0b62-4b11-8d4a-ac47f09a2a56_test.pdf
+2025-11-24 18:15:16,621 - src.routes.documents - INFO - Starting processing for Anti-Money-Laundering-ACT2013_0.pdf
+2025-11-24 18:15:16,623 - src.routes.documents - INFO - Chunking Anti-Money-Laundering-ACT2013_0.pdf...
+2025-11-24 18:15:17,091 - src.routes.documents - INFO - Generated 210 chunks for Anti-Money-Laundering-ACT2013_0.pdf
+2025-11-24 18:15:17,091 - src.routes.documents - INFO - Embedding 210 chunks...
+2025-11-24 18:15:22,355 - src.routes.documents - INFO - Generated embeddings for Anti-Money-Laundering-ACT2013_0.pdf
+2025-11-24 18:15:22,356 - src.routes.documents - INFO - Storing chunks in Vector DB...
+2025-11-24 18:15:22,508 - src.routes.documents - INFO - Successfully processed Anti-Money-Laundering-ACT2013_0.pdf
+2025-11-24 18:15:22,508 - src.routes.documents - INFO - Removed temporary file uploads\739c68db-dd20-44a8-bfa6-cb38d26695c9_Anti-Money-Laundering-ACT2013_0.pdf
+2025-11-24 18:49:57,708 - src.routes.documents - INFO - Starting processing for test.pdf
+2025-11-24 18:49:57,708 - src.routes.documents - INFO - Chunking test.pdf...
+2025-11-24 18:49:57,713 - src.routes.documents - INFO - Generated 1 chunks for test.pdf
+2025-11-24 18:49:57,713 - src.routes.documents - INFO - Embedding 1 chunks...
+2025-11-24 18:50:02,071 - src.routes.documents - INFO - Generated embeddings for test.pdf
+2025-11-24 18:50:02,071 - src.routes.documents - INFO - Storing chunks in Vector DB...
+2025-11-24 18:50:02,075 - src.routes.documents - INFO - Successfully processed test.pdf
+2025-11-24 18:50:02,075 - src.routes.documents - INFO - Removed temporary file uploads\8757cd29-b3ea-40e5-987e-0539aba45123_test.pdf
+2025-11-24 21:15:55,661 - src.routes.documents - INFO - Starting processing for Delegated Competent Authorities - Uganda Revenue Authority.pdf
+2025-11-24 21:15:55,667 - src.routes.documents - INFO - Chunking Delegated Competent Authorities - Uganda Revenue Authority.pdf...
+2025-11-24 21:15:55,947 - src.routes.documents - INFO - Generated 6 chunks for Delegated Competent Authorities - Uganda Revenue Authority.pdf
+2025-11-24 21:15:55,947 - src.routes.documents - INFO - Embedding 6 chunks...
+2025-11-24 21:16:02,777 - src.routes.documents - INFO - Generated embeddings for Delegated Competent Authorities - Uganda Revenue Authority.pdf
+2025-11-24 21:16:02,779 - src.routes.documents - INFO - Storing chunks in Vector DB...
+2025-11-24 21:16:03,180 - src.routes.documents - INFO - Successfully processed Delegated Competent Authorities - Uganda Revenue Authority.pdf
+2025-11-24 21:16:03,185 - src.routes.documents - INFO - Removed temporary file uploads\891a4521-01b6-4d06-91fb-562ab1ff5c98_Delegated Competent Authorities - Uganda Revenue Authority.pdf
