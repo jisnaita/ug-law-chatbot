@@ -1,0 +1,191 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Uganda Laws Chatbot API",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://stiffledly-probative-dayna.ngrok-free.dev"
+    }
+  ],
+  "paths": {
+    "/api/v1/retrieval/search": {
+      "post": {
+        "tags": [
+          "retrieval"
+        ],
+        "summary": "Search Knowledge Base",
+        "description": "Search the vector database for relevant document chunks based on the query.\nThis endpoint is designed to be used by a Custom GPT.",
+        "operationId": "search_knowledge_base_api_v1_retrieval_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetrievalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetrievalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RetrievalRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query",
+            "description": "The user's question or query to search for."
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "Number of chunks to retrieve.",
+            "default": 5
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "RetrievalRequest"
+      },
+      "RetrievalResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/RetrievalResult"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "RetrievalResponse"
+      },
+      "RetrievalResult": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page",
+            "default": 1
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "source",
+          "score"
+        ],
+        "title": "RetrievalResult"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
